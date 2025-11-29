@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hospital EAI - Connection Info</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .note {
+            background: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Hospital EAI Connection Information</h1>
+
+    <div class="note">
+        <p><strong>Welcome!</strong> This EAI system simulates the activity of the Dole Hospital.</p>
+    </div>
+
+    <h2>How to Connect</h2>
+    <p>To receive real-time updates from the hospital simulation, you must register your client application.</p>
+
+    <h3>1. Registration</h3>
+    <p>Ask an administrator to add your client in the <strong>Admin Dashboard</strong>.</p>
+    <p>You will need to provide:</p>
+    <ul>
+        <li><strong>Name</strong>: The name of your application.</li>
+        <li><strong>Base URL</strong>: The base URL of your application (e.g., <code>https://myapp.com</code>).</li>
+    </ul>
+
+    <h3>2. Data Format</h3>
+    <p>The EAI will send HTTP <code>POST</code> requests to: <code>{Base URL}/api/webhook/fhir</code></p>
+
+    <h4>Headers</h4>
+    <p>Each request will include the following headers for authentication:</p>
+    <ul>
+        <li><code>X-Client-ID</code>: Your unique Client ID.</li>
+        <li><code>X-Client-Secret</code>: Your secret key (keep this safe!).</li>
+        <li><code>Content-Type</code>: <code>application/json</code></li>
+    </ul>
+
+    <p>The body of the request will be a JSON object representing a FHIR resource.</p>
+
+    <h4>Example: Patient Admission</h4>
+    <pre>
+{
+  "resourceType": "Patient",
+  "id": "patient-pole-cardio-usic-bed-1",
+  "name": [{"family": "Martin", "given": ["Jean"]}],
+  "birthDate": "1980-05-12",
+  "gender": "male"
+}
+    </pre>
+
+    <h4>Example: Observation</h4>
+    <pre>
+{
+  "resourceType": "Observation",
+  "status": "final",
+  "subject": {"reference": "Patient/patient-pole-cardio-usic-bed-1"},
+  "effectiveDateTime": "2023-10-27T10:30:00",
+  "note": [{"text": "Patient stable."}],
+  "code": {
+      "coding": [{
+          "system": "http://loinc.org",
+          "code": "11506-3",
+          "display": "Progress note- nursing"
+      }]
+  }
+}
+    </pre>
+
+    <h3>3. Simulation</h3>
+    <p>Once registered, you will automatically start receiving events as they happen in the hospital (Admissions,
+        Discharges, Transfers, Notes).</p>
+
+    <p><a href="/admin/">Go to Admin Dashboard</a></p>
+</body>
+
+</html>
